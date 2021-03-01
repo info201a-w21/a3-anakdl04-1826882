@@ -1,0 +1,63 @@
+---
+title: "Assignment 3: Data Visualization (incarceration)"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+source("analysis.R")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+Racism is a big problem in the United States. In this project, I attempted to analyze incarceration trends to compare the incarceration rates between black and white populations.
+
+## Summary
+For my variables, I chose to analyze highest_pop_year, highest_pop_state_1993, highest_pop_state, 
+highest_black_pop_state, and highest_black_pop_county. These variables helped me decide the most 
+adequate region I should use to compare the incarceration rates of two populations.
+
+```{r, echo = TRUE, eval = TRUE}
+
+highest_pop_year <- data %>%
+  filter(total_jail_pop == max(total_jail_pop, na.rm = TRUE)) %>%
+  pull(year)
+
+highest_pop_state_1993 <- data %>%
+  filter(year == "1993") %>%
+  filter(total_jail_pop == max(total_jail_pop, na.rm = TRUE)) %>%
+  pull(state)
+
+highest_pop_state <- data %>%
+  filter(year == max(year)) %>%
+  filter(total_jail_pop == max(total_jail_pop, na.rm = TRUE)) %>%
+  pull(state)
+
+highest_black_pop_state <- data %>%
+  filter(year == max(year)) %>%
+  filter(black_jail_pop == max(black_jail_pop, na.rm = TRUE)) %>%
+  pull(state)
+
+highest_black_pop_county <- data %>%
+  filter(state == "CA") %>%
+  filter(black_jail_pop == max(black_jail_pop, na.rm = TRUE)) %>%
+  pull(county_name)
+
+```
+
+## Trends Over Time Chart
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+race_trend_chart
+```
+This chart shows a trends over time chart of the jail population of white and black people in Los Angeles County from 2015 to 2018. As shown in the chart, there was a more dramatic increase in the trend for black population between 2016 and 2017 compared to white population. Additionally, the rate of jail population is generally much more higher for black population compared to white population.
+
+## Variable Comparison Chart
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+race_comparison_chart
+```
+This chart shows a comparison between jail population of different races in 2018. As shown in the chart, the number of total population is 17208, the number of black population is 5024, and the number of white population is 2579. We can observe that the number of black population is the amount doubled that of white population. Regarding the fact that total population consists of various race groups, jail population of black population seems to be very high, especially when compared to that of white population.
+
+## Map
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+black_pop_data_map
+```
+This chart shows a national jail population of black people in the United States in 2018. As shown in the map, some states including California, Texas, and Georgia showed higher jail population of black people compared to other states. However, most of the states generally have low (0~10000) jail population of black people in 2018.
